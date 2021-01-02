@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { UserRepository } from './user.repository';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UserStructureDto } from './dto/user-structure-dto';
+import { User } from './user.entity';
 
 @Injectable()
 export class AuthService {
@@ -8,4 +10,11 @@ export class AuthService {
     @InjectRepository(UserRepository)
     private userRepository: UserRepository,
   ) {}
+
+  async signUp(userStructure: UserStructureDto): Promise<User> {
+    // Process data
+    userStructure.username = userStructure.username.toLowerCase();
+
+    return this.userRepository.signUp(userStructure);
+  }
 }
