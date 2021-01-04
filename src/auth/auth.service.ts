@@ -17,4 +17,8 @@ export class AuthService {
 
     return this.userRepository.signUp(userStructure);
   }
+
+  async signIn(authUserDto: UserStructureDto): Promise<boolean> {
+    return await this.userRepository.checkedUserPassword(authUserDto);
+  }
 }
