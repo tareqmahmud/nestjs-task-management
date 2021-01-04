@@ -17,7 +17,7 @@ export class AuthController {
   @Post('/signin')
   async signIn(
     @Body(ValidationPipe) authUserDto: UserStructureDto,
-  ): Promise<boolean> {
+  ): Promise<string> {
     return await this.authService.signIn(authUserDto);
   }
 }

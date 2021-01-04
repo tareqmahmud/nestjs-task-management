@@ -1,14 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserRepository } from './user.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserStructureDto } from './dto/user-structure-dto';
 import { User } from './user.entity';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(UserRepository)
     private userRepository: UserRepository,
+    private jwtService: JwtService,
   ) {}
 
   async signUp(userStructure: UserStructureDto): Promise<User> {
@@ -18,7 +20,16 @@ export class AuthService {
     return this.userRepository.signUp(userStructure);
   }
 
-  async signIn(authUserDto: UserStructureDto): Promise<boolean> {
-    return await this.userRepository.checkedUserPassword(authUserDto);
+  async signIn(authUserDto: UserStructureDto): Promise<string> {
+    const user = await this.userRepository.checkedUserPassword(authUserDto);
+
+    if (!user) {
+      throw new UnauthorizedException();
+    }
+
+    const username = user.username;
+    const payload = { username };
+
+    return this.jwtService.sign(payload);
   }
 }
