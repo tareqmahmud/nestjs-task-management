@@ -13,7 +13,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signUp(userStructure: UserStructureDto): Promise<User> {
+  async signUp(userStructure: UserStructureDto): Promise<void> {
     // Process data
     userStructure.username = userStructure.username.toLowerCase();
 
