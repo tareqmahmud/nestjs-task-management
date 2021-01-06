@@ -7,10 +7,15 @@ import { User } from '../auth/user.entity';
 
 @EntityRepository(Task)
 export class TaskRepository extends Repository<Task> {
-  async getTasks(getTaskFilter: GetTasksFilterDto): Promise<Task[]> {
+  async getTasks(
+    getTaskFilter: GetTasksFilterDto,
+    user: User,
+  ): Promise<Task[]> {
     const { status, search } = getTaskFilter;
 
     const tasksQuery = this.createQueryBuilder('task').orderBy('id', 'ASC');
+
+    tasksQuery.where('task.userId = :userId', { userId: user.id });
 
     if (status) {
       tasksQuery.andWhere('task.status=:status', { status });
@@ -23,8 +28,7 @@ export class TaskRepository extends Repository<Task> {
       );
     }
 
-    const tasks = await tasksQuery.getMany();
-    return tasks;
+    return await tasksQuery.getMany();
   }
 
   /**

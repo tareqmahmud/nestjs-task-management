@@ -18,19 +18,24 @@ export class TasksService {
    * Service to get tasks by filter or without filter
    *
    * @param getTaskFilter
+   * @param user
    */
-  async getTasks(getTaskFilter: GetTasksFilterDto): Promise<Task[]> {
-    return this.taskRepository.getTasks(getTaskFilter);
+  async getTasks(
+    getTaskFilter: GetTasksFilterDto,
+    user: User,
+  ): Promise<Task[]> {
+    return this.taskRepository.getTasks(getTaskFilter, user);
   }
 
   /**
    * Service to retrieve a task by it's it
    *
    * @param id
+   * @param user
    */
-  async getTaskById(id: number): Promise<Task> {
+  async getTaskById(id: number, user: User): Promise<Task> {
     const foundTask = await this.taskRepository.findOne({
-      where: { id },
+      where: { id: id, user: user },
     });
 
     if (!foundTask) {
@@ -55,9 +60,14 @@ export class TasksService {
    *
    * @param id
    * @param status
+   * @param user
    */
-  async changeStatus(id: number, status: TaskStatus): Promise<Task> {
-    const task = await this.getTaskById(id);
+  async changeStatus(
+    id: number,
+    status: TaskStatus,
+    user: User,
+  ): Promise<Task> {
+    const task = await this.getTaskById(id, user);
     task.status = status;
     await task.save();
 
