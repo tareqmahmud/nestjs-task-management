@@ -2,7 +2,6 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserRepository } from './user.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserStructureDto } from './dto/user-structure-dto';
-import { User } from './user.entity';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
@@ -13,7 +12,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signUp(userStructure: UserStructureDto): Promise<User> {
+  async signUp(userStructure: UserStructureDto): Promise<void> {
     // Process data
     userStructure.username = userStructure.username.toLowerCase();
 
