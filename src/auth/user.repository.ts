@@ -3,7 +3,8 @@ import { User } from './user.entity';
 import { UserStructureDto } from './dto/user-structure-dto';
 import * as bcrypt from 'bcrypt';
 import {
-  BadRequestException, ConflictException,
+  BadRequestException,
+  ConflictException,
   InternalServerErrorException,
 } from '@nestjs/common';
 
@@ -51,13 +52,13 @@ export class UserRepository extends Repository<User> {
     return await bcrypt.hash(password, salt);
   }
 
-  async checkedUserPassword(
+  async validateUserPassword(
     authUserDto: UserStructureDto,
-  ): Promise<User | null> {
+  ): Promise<string | null> {
     const user = await User.findOne({ username: authUserDto.username });
 
     if (user && (await user.checkPassword(authUserDto.password))) {
-      return user;
+      return user.username;
     }
 
     return null;
