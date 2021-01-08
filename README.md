@@ -38,18 +38,18 @@ $ npm run start:prod
 #### Auth
 | Route      | Method |  Description | Body |
 | ----------- | ----------- | ----------- | ------------- |
-| `/auth/signup`      | `POST`       | To signup a user       | `{ username: string,password: string }`
-| `/auth/signin`      | `POST`       | To signin a user       | `{ username: string,password: string }`
+| `/auth/signup`      | `POST`       | To signup a user       | `{ username: string,password: string }` |
+| `/auth/signin`      | `POST`       | To signin a user       | `{ username: string,password: string }` |
 
 
 #### Tasks
-| Route      | Method |  Description | Body | Query
-| ----------- | ----------- | ----------- | ---------- | ---------- |
-| `/tasks`      | `GET`       | To get all the tasks | `None` | `?status=OPEN/Close/IN_PROGESS&search=string`
-| `/tasks`      | `POST`       | To save or create a task | `{ title: string, description: string }`
-| `/tasks/:id`      | `GET`       | To get all a single task | `None`
-| `/tasks/:id`      | `PATCH`       | To update the status of a task | `{ status: OPEN or IN_PROGESS, or DONE }`
-| `/tasks/:id`      | `DELETE`       | To delete a task| `None`
+| Route      | Method |  Description | Body |
+| ----------- | ----------- | ----------- | ---------- |
+| `/tasks`      | `GET`       | To get all the tasks | `None` |
+| `/tasks`      | `POST`       | To save or create a task | `{ title: string, description: string }` |
+| `/tasks/:id`      | `GET`       | To get all a single task | `None` |
+| `/tasks/:id`      | `PATCH`       | To update the status of a task | `{ status: OPEN or IN_PROGESS, or DONE }` |
+| `/tasks/:id`      | `DELETE`       | To delete a task| `None` |
 
 
 ## License
