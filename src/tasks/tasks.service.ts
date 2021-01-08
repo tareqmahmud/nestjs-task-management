@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { TaskRepository } from './task.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateTaskDto } from './dto/create-task-dto';
@@ -9,6 +9,8 @@ import { User } from '../auth/user.entity';
 
 @Injectable()
 export class TasksService {
+  private tasksLogger = new Logger('tasks');
+
   constructor(
     @InjectRepository(TaskRepository)
     private taskRepository: TaskRepository,
@@ -24,6 +26,9 @@ export class TasksService {
     getTaskFilter: GetTasksFilterDto,
     user: User,
   ): Promise<Task[]> {
+    // Logger
+    this.tasksLogger.verbose(`All the tasks fetched by ${user.username}`);
+
     return this.taskRepository.getTasks(getTaskFilter, user);
   }
 
@@ -42,6 +47,11 @@ export class TasksService {
       throw new NotFoundException();
     }
 
+    // Logger
+    this.tasksLogger.verbose(
+      `The task ${foundTask.title} is fetched by ${user.username}`,
+    );
+
     return foundTask;
   }
 
@@ -52,6 +62,9 @@ export class TasksService {
    * @param user
    */
   createTask(createTaskDto: CreateTaskDto, user: User): Promise<Task> {
+    // Logger
+    this.tasksLogger.verbose(`A new task has been created by ${user.username}`);
+
     return this.taskRepository.createTask(createTaskDto, user);
   }
 
@@ -71,6 +84,11 @@ export class TasksService {
     task.status = status;
     await task.save();
 
+    // Logger
+    this.tasksLogger.verbose(
+      `A task status updated for ${task.title} by ${user.username}`,
+    );
+
     return task;
   }
 
@@ -87,6 +105,7 @@ export class TasksService {
     });
 
     if (!result.affected) {
+      this.tasksLogger.error(`Invalid task`);
       throw new NotFoundException();
     }
   }
