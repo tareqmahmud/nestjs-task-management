@@ -47,6 +47,10 @@ $ npm run start:prod
 | `/tasks/:id`      | `DELETE`       | `None` | To delete a task|
 
 
+## TODO
+- [ ] Add logout route
+- [ ] Implement test
+
 ## License
 
 Nest is [MIT licensed](LICENSE).
